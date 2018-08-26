@@ -86,7 +86,7 @@ def diagnosis_menu():
                 ev_diag.connect()
                 ev_diag.serialcon.do_setup(ev_diag.triplet_setup)
                 ev_diag.ion.read_bmu_data(ev_diag.serialcon)
-                ev_diag.ion.read_odometer(ev_diag.serialcon)
+                ev_diag.ion.calculate_values()
                 ev_diag.serialcon.reset()
                 ev_diag.disconnect()
             except serial.SerialException:

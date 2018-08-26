@@ -3,3 +3,7 @@ build/
 __pycache__/
 *.ini
 *.spec
+raw_can.txt
+raw_can_scanner.txt
+requests.txt
+*.csv
