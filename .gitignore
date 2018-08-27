@@ -7,3 +7,4 @@ raw_can.txt
 raw_can_scanner.txt
 requests.txt
 *.csv
+test.py

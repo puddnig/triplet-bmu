@@ -25,6 +25,19 @@ def exit_prog(answer):
         quit()
 
 
+def print_menu():
+    print_header()
+    print(cc.output_as_str('diag'), '\n')
+    print(cc.output_as_str('print header'))
+    answer = input('')
+    if answer == '1':
+        ev_diag.ion.print_data(ev_diag.ion.bmu_data)
+    elif answer == '2':
+        ev_diag.ion.print_data(ev_diag.ion.cell_info)
+    elif answer == '3':
+        ev_diag.ion.print_data(ev_diag.ion.cell_info)
+
+
 def port_tool():
     while 1:
         print_header()
@@ -36,8 +49,18 @@ def port_tool():
         elif answer == '1':
             print(cc.output_as_str('port input'))
             nport = input('')
-            if nport != '':
-                ev_diag.serport = nport
+            try:
+                nport = 'COM'+str(int(nport))
+            except ValueError:
+                pass
+            if nport.startswith('COM') is True and nport[:3]:
+                try:
+                    int(nport[3:])
+                    ev_diag.serport = nport
+                except ValueError:
+                    pass
+        cc.config.set('DEFAULT', 'port', ev_diag.serport)
+        cc.writeconf()
         exit_prog(answer)
     clear()
 
@@ -71,7 +94,6 @@ def baud_tool():
         elif answer == '3':
             break
         exit_prog(answer)
-    clear()
 
 
 def diagnosis_menu():
@@ -93,7 +115,7 @@ def diagnosis_menu():
                 print(cc.output_as_str('con error'))
                 input(cc.output_as_str('enter2cont'))
         elif answer == '2':
-            ev_diag.ion.print_bmu_data()
+            print_menu()
             input(cc.output_as_str('enter2cont'))
         elif answer == '3':
             if ev_diag.ion.bmu_data != {}:

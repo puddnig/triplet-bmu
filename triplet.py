@@ -50,8 +50,8 @@ class triplet:
             w.writerow([key, val])
         f.close()
 
-    def print_bmu_data(self):
-        for key, val in self.bmu_data.items():
+    def print_data(self, dict):
+        for key, val in dict.items():
             print('{:_<30}{:_>8}'.format(key, val))
 
     def message_decipher(self, message, command):
@@ -61,7 +61,7 @@ class triplet:
 
         def temp(a, b):
             return int(content[a:b], 16) - 50
-        
+
         def hex2int(a, b):
             return int(content[a:b], 16)
 
@@ -96,19 +96,27 @@ class triplet:
             self.bmu_data['Battery fan pwm %'] = hex2int(78, 80)
 
         elif command == '022102':
-            index = 1
             ID = 1
-            while 1:
-                temp_volt = voltage(4*index-4, 4*index)
-                if temp_volt == 2.1:
+            for n in range(1, 89):
+                tmp_volt = voltage(4*n-4, 4*n)
+                if tmp_volt == 2.1:
                     break
-                elif temp_volt > 5:
+                elif tmp_volt > 5:
                     pass
                 else:
                     name = 'Cell Voltage ' + '{:02d}'.format(ID)
-                    self.cell_info[name] = temp_volt
+                    self.cell_info[name] = tmp_volt
                     ID += 1
-                index += 1
+        elif command == '022103':
+            ID = 1
+            for n in range(1, 67):
+                tmp_temp = temp(2*n-2, 2*n)
+                if tmp_temp > 90:
+                    pass
+                else:
+                    name = 'Temperature ' + '{:02d}'.format(ID)
+                    self.cell_info[name] = tmp_temp
+                    ID += 1
         elif command == '022106':
             self.bmu_data['Odometer'] = int(content[0:6], 16)
         elif command == '022113':

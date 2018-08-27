@@ -4,6 +4,7 @@
 
 import configparser
 
+
 config = configparser.ConfigParser()
 
 output = {}
@@ -25,8 +26,14 @@ output['main header'] = dict(en='1=Diagnosis   2=Change port   3=Test connection
 output['read data'] = dict(en='Reading values...', de='Lese Daten...')
 output['no data'] = dict(en='no data', de='Keine Daten')
 output['diag header'] = dict(en='1=Get BMU values   2=Show values   3=Save result   4=back', de='1=BMU Werte einlesen   2=Werte anzeigen   3=Ergebnis speichern   4=Zurück')
+output['print header']=dict(en = '1=bmu info   2=cell info   3=balancer status', de = '1=BMU Info 2= Zellen Info 3= Balancer Status')
 # output['']=dict(en = '', de = '')
 
+
+
+def writeconf():
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
 
 def initial_config():
     config['DEFAULT'] = {}
